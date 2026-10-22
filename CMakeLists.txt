@@ -1,0 +1,15 @@
+cmake_minimum_required(VERSION 3.20)
+project(ObjectClaim LANGUAGES CXX)
+
+add_executable(ObjectClaim ObjectClaim.cpp)
+target_compile_features(ObjectClaim PRIVATE cxx_std_17)
+target_compile_definitions(ObjectClaim PRIVATE UNICODE _UNICODE WIN32_LEAN_AND_MEAN)
+target_link_libraries(ObjectClaim PRIVATE advapi32)
+
+if(MSVC)
+    set_property(TARGET ObjectClaim PROPERTY MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>")
+    target_compile_options(ObjectClaim PRIVATE /W4)
+else()
+    target_compile_options(ObjectClaim PRIVATE -Wall -Wextra -Wpedantic -Wno-cast-function-type)
+    target_link_options(ObjectClaim PRIVATE -municode -static)
+endif()
